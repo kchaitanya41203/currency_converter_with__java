@@ -1,0 +1,164 @@
+package currencyconverter;
+
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
+public class Source extends JFrame {
+
+    private JPanel contentPane;
+    private JTextField txtamount;
+
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    Source frame = new Source();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * Create the frame.
+     */
+    public Source() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 450, 300);
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+
+        JLabel from = new JLabel("convert from:");
+        from.setFont(new Font("Tahoma", Font.PLAIN, 17));
+        from.setBounds(24, 63, 133, 28);
+        contentPane.add(from);
+
+        JLabel to = new JLabel("convert to:");
+        to.setFont(new Font("Tahoma", Font.PLAIN, 17));
+        to.setBounds(24, 147, 133, 28);
+        contentPane.add(to);
+
+        txtamount = new JTextField();
+        txtamount.setBounds(133, 25, 171, 28);
+        contentPane.add(txtamount);
+        txtamount.setColumns(10);
+
+        JLabel amount = new JLabel("Amount:");
+        amount.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        amount.setBounds(24, 28, 85, 25);
+        contentPane.add(amount);
+
+        JComboBox<String> from_convert = new JComboBox<String>();
+        from_convert.setModel(new DefaultComboBoxModel<String>(new String[] {"USD", "INR", "EUR", "JPY","RUB","GBP"}));
+        from_convert.setBounds(143, 70, 217, 28);
+        contentPane.add(from_convert);
+
+        JComboBox<String> to_convert = new JComboBox<String>();
+        to_convert.setModel(new DefaultComboBoxModel<String>(new String[] {"USD", "INR", "EUR", "JPY","RUB","GBP"}));
+        to_convert.setBounds(143, 147, 217, 28);
+        contentPane.add(to_convert);
+
+        JButton convert = new JButton("convert");
+        convert.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        convert.setBounds(156, 232, 85, 21);
+        contentPane.add(convert);
+
+        JTextArea txtResult = new JTextArea();
+        txtResult.setBounds(84, 196, 300, 22);
+        contentPane.add(txtResult);
+        
+        JLabel r = new JLabel("result:");
+        r.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        r.setBounds(24, 197, 64, 19);
+        contentPane.add(r);
+
+        convert.addActionListener(e -> {
+            double txtamountValue = Double.parseDouble(txtamount.getText());
+            String fromCurrency = from_convert.getSelectedItem().toString();
+            String toCurrency = to_convert.getSelectedItem().toString();
+
+            double rate = getExchangeRate(fromCurrency, toCurrency);
+            double result = txtamountValue * rate;
+
+            String resultText = txtamountValue + " " + fromCurrency + " = " + result + " " + toCurrency;
+            txtResult.setText(resultText);
+        });
+    }
+
+    public static double getExchangeRate(String fromCurrency, String toCurrency) {
+    	if (fromCurrency.equals(toCurrency)) {
+            return 1;
+        } else if (fromCurrency.equals("USD") && toCurrency.equals("INR")) {
+            return 82.19;
+        } else if (fromCurrency.equals("USD") && toCurrency.equals("EUR")) {
+            return 0.92;
+        } else if (fromCurrency.equals("USD") && toCurrency.equals("JPY")) {
+        	return 134.72;
+        } else if (fromCurrency.equals("USD") && toCurrency.equals("RUB")) {
+        	return 76.86;
+        } else if (fromCurrency.equals("USD") && toCurrency.equals("GBP")) {
+        	return 0.80;
+        } else if (fromCurrency.equals("INR") && toCurrency.equals("USD")) {
+        	return 0.012;
+        } else if (fromCurrency.equals("INR") && toCurrency.equals("EUR")) {
+        	return 0.011;
+        } else if (fromCurrency.equals("INR") && toCurrency.equals("JPY")) {
+        	return 1.64;
+        } else if (fromCurrency.equals("INR") && toCurrency.equals("RUB")) {
+            return 0.94;
+        } else if (fromCurrency.equals("INR") && toCurrency.equals("GBP")) {
+            return 0.0097;
+        } else if (fromCurrency.equals("EUR") && toCurrency.equals("USD")) {
+        	return 1.09;
+        } else if (fromCurrency.equals("EUR") && toCurrency.equals("INR")) {
+        	return 89.78;
+        } else if (fromCurrency.equals("EUR") && toCurrency.equals("JPY")) {
+        	return 147.17;
+        } else if (fromCurrency.equals("EUR") && toCurrency.equals("RUB")) {
+        	return 83.98;
+        } else if (fromCurrency.equals("EUR") && toCurrency.equals("GBP")) {
+        	return 0.87;
+        } else if (fromCurrency.equals("JPY") && toCurrency.equals("USD")) {
+        	return 0.0074;
+        } else if (fromCurrency.equals("JPY") && toCurrency.equals("INR")) {
+        	return 0.61;
+        } else if (fromCurrency.equals("JPY") && toCurrency.equals("EUR")) {
+        	return 0.0068;
+        } else if (fromCurrency.equals("JPY") && toCurrency.equals("RUB")) {
+        	return 0.57;
+        } else if (fromCurrency.equals("JPY") && toCurrency.equals("GBP")) {
+        	return 0.0059;
+        } else if (fromCurrency.equals("RUB") && toCurrency.equals("USD")) {
+        	return 0.013;
+        } else if (fromCurrency.equals("RUB") && toCurrency.equals("INR")) {
+        	return 1.07;
+        } else if (fromCurrency.equals("RUB") && toCurrency.equals("EUR")) {
+        	return 0.012;
+        } else if (fromCurrency.equals("RUB") && toCurrency.equals("JPY")) {
+        	return 1.76;
+        } else if (fromCurrency.equals("RUB") && toCurrency.equals("GBP")) {
+        	return 0.010;
+        } else if (fromCurrency.equals("GBP") && toCurrency.equals("USD")) {
+        	return 1.25;
+        } else if (fromCurrency.equals("GBP") && toCurrency.equals("INR")) {
+        	return 102.82;
+        } else if (fromCurrency.equals("GBP") && toCurrency.equals("EUR")) {
+        	return 1.15;
+        } else if (fromCurrency.equals("GBP") && toCurrency.equals("JPY")) {
+        	return 168.61;
+        } else if (fromCurrency.equals("GBP") && toCurrency.equals("RUB")) {
+        	return 95.97;
+        } else {       
+            return 0;
+        }
+    }
+}
